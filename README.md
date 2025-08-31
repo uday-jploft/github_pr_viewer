@@ -29,7 +29,6 @@ A beautiful, performant Flutter app that displays GitHub pull requests with rich
 
 ## 🏗️ Project Structure
 
-
 ```
 lib/
 ├── core/
