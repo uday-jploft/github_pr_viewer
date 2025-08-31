@@ -8,7 +8,7 @@ import '../models/pull_request.dart';
 class GitHubApiService {
   static const String baseUrl = 'https://api.github.com';
   static const String owner = 'uday-jploft'; // Replace with actual username
-  static const String repo = 'test_package'; // Replace with actual repo name
+  static const String repo = 'github_pr_viewer'; // Replace with actual repo name
   // https://github.com/uday-jploft/realm_trainer
   final http.Client _client;
 
