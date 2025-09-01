@@ -242,36 +242,41 @@ class PRStatsCard extends ConsumerWidget {
 
             const SizedBox(height: 16),
 
-            Row(
-              children: [
-                Expanded(
-                  child: _buildStatItem(
-                    theme,
-                    'Open PRs',
-                    '${stats['open']}',
-                    Icons.radio_button_unchecked,
-                    const Color(0xFF28A745),
-                  ),
-                ),
-                Expanded(
-                  child: _buildStatItem(
-                    theme,
-                    'Draft PRs',
-                    '${stats['draft']}',
-                    Icons.edit_outlined,
-                    theme.colorScheme.outline,
-                  ),
-                ),
-                Expanded(
-                  child: _buildStatItem(
-                    theme,
-                    'Changes',
-                    '+${stats['total_additions']} -${stats['total_deletions']}',
-                    Icons.code,
-                    theme.colorScheme.primary,
-                  ),
-                ),
-              ],
+            Builder(
+              builder: (context) {
+                print(stats);
+                return Row(
+                  children: [
+                    Expanded(
+                      child: _buildStatItem(
+                        theme,
+                        'Open PRs',
+                        '${stats['open']}',
+                        Icons.radio_button_unchecked,
+                        const Color(0xFF28A745),
+                      ),
+                    ),
+                    Expanded(
+                      child: _buildStatItem(
+                        theme,
+                        'Draft PRs',
+                        '${stats['draft']}',
+                        Icons.edit_outlined,
+                        theme.colorScheme.outline,
+                      ),
+                    ),
+                    Expanded(
+                      child: _buildStatItem(
+                        theme,
+                        'Changes',
+                        '+${stats['total_additions']} -${stats['total_deletions']}',
+                        Icons.code,
+                        theme.colorScheme.primary,
+                      ),
+                    ),
+                  ],
+                );
+              }
             ),
           ],
         ),
