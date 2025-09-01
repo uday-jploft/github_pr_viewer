@@ -20,28 +20,53 @@ A beautiful, performant Flutter app that displays GitHub pull requests with rich
 - 🎯 **Pull-to-Refresh** with custom indicators
 - 🌈 **Gradient Overlays** and modern visual effects
 
-### Monitoring & Performance
-- 📈 **Real-time Performance Monitoring** (FPS, memory, API response times)
-- 📊 **Comprehensive Logging** for debugging and analytics
-- ⚡ **Performance Benchmarks** and quality gates
-- 🔍 **User Interaction Tracking** for UX insights
-- 📱 **Device-specific Optimizations**
+
 
 ## 🏗️ Project Structure
 
 ```
 lib/
-├── core/
-│   ├── monitoring/
-│   │   └── performance_monitor.dart    # Real-time performance tracking
-│   ├── router/
-│   │   └── app_router.dart            # Navigation with monitoring
-│   ├── theme/
-│   │   └── app_theme.dart             # Rich Material Design 3 theme
-│   └── utils/
-│       └── app_logger.dart            # Comprehensive logging system
-
+├── core/ # Reusable core utilities
+│ ├── router/ # App navigation
+│ │ └── app_router.dart
+│ ├── theme/ # App-wide theming
+│ │ └── app_theme.dart
+│ └── utils/ # Helpers & common tools
+│ ├── app_logger.dart
+│ └── common_exports.dart
+│
+├── data/ # API & models
+│ ├── api/
+│ │ └── github_api_service.dart # GitHub API integration
+│ └── models/
+│ └── pull_request.dart # Pull Request model
+│
+├── features/ # Feature-based modules
+│ ├── auth/ # Authentication
+│ │ └── presentation/
+│ │ ├── providers/
+│ │ │ └── auth_provider.dart
+│ │ ├── screens/
+│ │ │ └── login_screen.dart
+│ │ └── widgets/
+│ │ └── login_form.dart
+│ │
+│ └── pr/ # Pull Requests
+│ └── presentation/
+│ ├── providers/
+│ │ ├── pr_provider.dart
+│ │ └── theme_provider.dart
+│ ├── screens/
+│ │ └── pr_list_screen.dart
+│ └── widgets/
+│ ├── pr_card.dart
+│ ├── pr_search_bar.dart
+│ └── pr_shimmer_loading.dart
+│
+└── main.dart # App entry point
 ```
+
+
 ## 🔐 Authentication (Github Auth Token)
 
 This project uses a dummy GitHub token instead of real OAuth for simplicity.
