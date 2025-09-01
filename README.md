@@ -89,6 +89,23 @@ await _secureStorage.write(key: 'github_token', value: fakeToken);
 final prefs = await SharedPreferences.getInstance();
 
 
+## 🚀 Future Improvements
+
+- 🧵 **Isolates for Performance**  
+  Use Dart isolates to handle heavy tasks (e.g., parsing large PR lists) without blocking the UI.
+
+- 🔑 **GitHub Token Integration**  
+  Allow authenticated users to create Pull Requests directly from the app using a personal access token. 
+  Assign reviewers, tag teammates, and manage PRs within the app.
+
+- 📊 **Analytics for Team Performance**  
+  Suggest PR reviewers or auto-generate PR titles/descriptions based on commit history.
+  Integrate tools like PostHog, Appsflyer for PR creation trends, Merge frequency
+
+- 🌐 **Offline-First Support**  
+  Cache PR data locally with Drift/SQLite so the app works even without internet.
+
+
 ## 🎥 Demo Video
 
 [![GitHub PR Viewer Demo](https://youtube.com/shorts/FFFCgEZD4qE?si=KiRypuWre2AYoikE.jpg)](https://youtube.com/shorts/FFFCgEZD4qE?si=KiRypuWre2AYoikE)
