@@ -44,7 +44,7 @@ class _LoginFormState extends ConsumerState<LoginForm>
 
     // Pre-fill with demo credentials
     _usernameController.text = 'uday-jploft';
-    _passwordController.text = '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';
+    _passwordController.text = 'ghp_J8RWTMf1JVm8qTcKJCCdTZauL4fZ3K3AxLy123';
     _validateForm();
   }
 
@@ -82,15 +82,15 @@ class _LoginFormState extends ConsumerState<LoginForm>
 
     AppLogger.userAction('Login form submitted');
 
-    // final success = await ref.read(authProvider.notifier).login(
-    //   _usernameController.text.trim(),
-    //   _passwordController.text,
-    // );
-
-    final success = await ref.read(authProvider.notifier).loginWithToken(
+    final success = await ref.read(authProvider.notifier).login(
       _usernameController.text.trim(),
-      _passwordController.text.trim(),
+      _passwordController.text,
     );
+
+    // final success = await ref.read(authProvider.notifier).loginWithToken(
+    //   _usernameController.text.trim(),
+    //   _passwordController.text.trim(),
+    // );
 
 
 

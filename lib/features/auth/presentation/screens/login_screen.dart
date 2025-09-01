@@ -104,7 +104,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen>
               children: [
                 // Animated GitHub Logo Section
                 Expanded(
-                  flex: 2,
+                  flex: 1,
                   child: FadeTransition(
                     opacity: _fadeAnimation,
                     child: const Center(
@@ -223,8 +223,8 @@ class _AnimatedGitHubLogoState extends State<AnimatedGitHubLogo>
           child: Transform.rotate(
             angle: _rotateAnimation.value * 0.1, // Subtle rotation
             child: Container(
-              width: 120,
-              height: 120,
+              width: 90,
+              height: 90,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
                 gradient: LinearGradient(
@@ -245,7 +245,7 @@ class _AnimatedGitHubLogoState extends State<AnimatedGitHubLogo>
               ),
               child: Icon(
                 Icons.code_outlined,
-                size: 60,
+                size: 45,
                 color: Colors.white,
               ),
             ),
