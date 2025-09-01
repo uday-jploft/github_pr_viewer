@@ -1,9 +1,5 @@
-// lib/features/pr/presentation/widgets/pr_shimmer_loading.dart
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:github_pr_viewer/features/pr/presentation/providers/pr_provider.dart';
-import 'package:shimmer/shimmer.dart';
-import '../../../../core/utils/app_logger.dart';
+import 'package:github_pr_viewer/core/utils/common_exports.dart';
+// import 'package:shimmer/shimmer.dart';
 
 class PRShimmerLoading extends StatefulWidget {
   const PRShimmerLoading({super.key});
@@ -71,7 +67,6 @@ class _PRShimmerLoadingState extends State<PRShimmerLoading>
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Header row
               Row(
                 children: [
                   Container(
@@ -96,7 +91,6 @@ class _PRShimmerLoadingState extends State<PRShimmerLoading>
 
               const SizedBox(height: 12),
 
-              // Title lines
               Container(
                 width: double.infinity,
                 height: 20,
@@ -119,7 +113,6 @@ class _PRShimmerLoadingState extends State<PRShimmerLoading>
 
               const SizedBox(height: 12),
 
-              // Description lines
               Container(
                 width: double.infinity,
                 height: 16,
@@ -142,7 +135,6 @@ class _PRShimmerLoadingState extends State<PRShimmerLoading>
 
               const SizedBox(height: 16),
 
-              // Author row
               Row(
                 children: [
                   Container(
@@ -153,7 +145,9 @@ class _PRShimmerLoadingState extends State<PRShimmerLoading>
                       shape: BoxShape.circle,
                     ),
                   ),
+
                   const SizedBox(width: 12),
+
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -165,7 +159,9 @@ class _PRShimmerLoadingState extends State<PRShimmerLoading>
                           borderRadius: BorderRadius.circular(4),
                         ),
                       ),
+
                       const SizedBox(height: 4),
+
                       Container(
                         width: 60,
                         height: 12,
@@ -177,6 +173,7 @@ class _PRShimmerLoadingState extends State<PRShimmerLoading>
                     ],
                   ),
                   const Spacer(),
+
                   Container(
                     width: 50,
                     height: 24,

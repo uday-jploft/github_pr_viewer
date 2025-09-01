@@ -1,17 +1,5 @@
-// lib/features/auth/presentation/providers/auth_provider.dart
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:github_pr_viewer/data/models/pull_request.dart';
-import 'package:github_pr_viewer/github_service.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import '../../../../core/utils/app_logger.dart';
+import 'package:github_pr_viewer/core/utils/common_exports.dart';
 
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-// import '../services/github_service.dart';
-// import '../models/pull_request.dart';
-// import '../lib/features/auth/presentation/providers/auth_provider.dart';
-
-// Auth state model
 class AuthState {
   final bool isAuthenticated;
   final bool isLoading;
@@ -54,9 +42,7 @@ class AuthNotifier extends StateNotifier<AuthState> {
     aOptions: AndroidOptions(
       encryptedSharedPreferences: true,
     ),
-    // iOptions: IOSOptions(
-    //   // accessibility: KeychainItemAccessibility.first_unlock_this_device,
-    // ),
+    iOptions: IOSOptions(),
   );
 
   Future<void> _initializeAuth() async {
@@ -255,7 +241,7 @@ final pullRequestsProvider = FutureProvider<List<PullRequest>>((ref) async {
     throw Exception('Invalid repository format. Use: owner/repo');
   }
 
-  return GitHubService.getPullRequests(
+  return GitHubApiService.getPullRequests(
     owner: repoParts[0],
     repo: repoParts[1],
     token: authState.token!,
@@ -275,7 +261,7 @@ extension AuthNotifierExtension on AuthNotifier {
 
     try {
       // Validate token with GitHub API
-      final isValidToken = await GitHubService.validateToken(token);
+      final isValidToken = await GitHubApiService.validateToken(token);
 
       if (!isValidToken) {
         state = state.copyWith(

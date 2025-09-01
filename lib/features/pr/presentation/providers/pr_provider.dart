@@ -1,10 +1,7 @@
-// lib/features/pr/presentation/providers/pr_provider.dart
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:github_pr_viewer/data/api/github_api_service.dart';
-import 'package:github_pr_viewer/data/models/pull_request.dart';
-import '../../../../core/utils/app_logger.dart';
 
-// PR state model
+
+import 'package:github_pr_viewer/core/utils/common_exports.dart';
+
 class PullRequestState {
   final List<PullRequest> pullRequests;
   final bool isLoading;

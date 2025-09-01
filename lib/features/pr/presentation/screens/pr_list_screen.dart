@@ -1,15 +1,4 @@
-// lib/features/pr/presentation/screens/pr_list_screen.dart
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:github_pr_viewer/data/models/pull_request.dart';
-import '../../../../core/utils/app_logger.dart';
-import '../../../../main.dart';
-import '../../../auth/presentation/providers/auth_provider.dart';
-import '../providers/pr_provider.dart';
-import '../widgets/pr_card.dart';
-import '../widgets/pr_shimmer_loading.dart';
-import '../widgets/pr_search_bar.dart';
+import 'package:github_pr_viewer/core/utils/common_exports.dart';
 
 class PullRequestListScreen extends ConsumerStatefulWidget {
   const PullRequestListScreen({super.key});
@@ -25,6 +14,8 @@ class _PullRequestListScreenState extends ConsumerState<PullRequestListScreen>
 
   final ScrollController _scrollController = ScrollController();
   bool _showFab = false;
+
+  FocusNode searchFocusNode = FocusNode();
 
   @override
   void initState() {
@@ -43,7 +34,6 @@ class _PullRequestListScreenState extends ConsumerState<PullRequestListScreen>
 
     _scrollController.addListener(_onScroll);
 
-    // Load PRs on screen init
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _loadPullRequests();
     });
@@ -100,103 +90,138 @@ class _PullRequestListScreenState extends ConsumerState<PullRequestListScreen>
     final filteredPRs = ref.watch(filteredPullRequestsProvider);
     final authState = ref.watch(authProvider);
 
-    return Scaffold(
-      backgroundColor: theme.colorScheme.background,
-      appBar: AppBar(
-        title: const Text('Pull Requests'),
-        backgroundColor: theme.colorScheme.surface,
-        elevation: 0,
-        actions: [
-          // Theme toggle button
-          IconButton(
-            icon: Icon(
-              theme.brightness == Brightness.dark
-                  ? Icons.light_mode
-                  : Icons.dark_mode,
-            ),
-            onPressed: () {
-              ref.read(themeModeProvider.notifier).toggleTheme();
-              HapticFeedback.lightImpact();
-            },
-          ),
-
-          // Logout button
-          IconButton(
-            icon: const Icon(Icons.logout),
-            onPressed: () async {
-              await ref.read(authProvider.notifier).logout();
-              if (mounted) {
-                Navigator.of(context).pushReplacementNamed('/login');
-              }
-            },
-          ),
-        ],
-      ),
-
-      body: Column(
-        children: [
-          // Token display (for demo purposes)
-          if (authState.token != null) ...[
-            Container(
-              width: double.infinity,
-              padding: const EdgeInsets.all(16),
-              margin: const EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: theme.colorScheme.surfaceVariant.withOpacity(0.5),
-                borderRadius: BorderRadius.circular(12),
-                border: Border.all(
-                  color: theme.colorScheme.outline.withOpacity(0.2),
-                ),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Demo Token (Stored Securely)',
-                    style: theme.textTheme.titleSmall?.copyWith(
-                      color: theme.colorScheme.primary,
-                      fontWeight: FontWeight.w600,
+    return GestureDetector(
+      onTap :
+        (){
+          searchFocusNode.unfocus();
+        },
+      child: Scaffold(
+        backgroundColor: theme.colorScheme.background,
+        appBar: AppBar(
+          surfaceTintColor: theme.colorScheme.primary,
+          title: const Text('Pull Requests'),
+          backgroundColor: theme.colorScheme.surface,
+          elevation: 0,
+        ),
+        drawer: Drawer(
+          child: SafeArea(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Drawer Header
+                DrawerHeader(
+                  margin: EdgeInsets.zero,
+                  decoration: BoxDecoration(
+                    color: theme.colorScheme.primary.withOpacity(0.1),
+                  ),
+                  child: Align(
+                    alignment: Alignment.bottomLeft,
+                    child: Text(
+                      "GitHub PR Viewer",
+                      style: theme.textTheme.titleLarge?.copyWith(
+                        color: theme.colorScheme.primary,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ),
-                  const SizedBox(height: 4),
-                  Text(
-                    '${authState.token!.substring(0, 15)}...',
-                    style: theme.textTheme.bodySmall?.copyWith(
-                      fontFamily: 'monospace',
-                      color: theme.colorScheme.onSurface.withOpacity(0.7),
+                ),
+
+                if (authState.token != null) ...[
+                  Container(
+                    width: double.infinity,
+                    padding: const EdgeInsets.all(16),
+                    margin: const EdgeInsets.all(16),
+                    decoration: BoxDecoration(
+                      color: theme.colorScheme.surfaceVariant.withOpacity(0.5),
+                      borderRadius: BorderRadius.circular(12),
+                      border: Border.all(
+                        color: theme.colorScheme.outline.withOpacity(0.2),
+                      ),
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Demo Token (Stored Securely)',
+                          style: theme.textTheme.titleSmall?.copyWith(
+                            color: theme.colorScheme.primary,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                        const SizedBox(height: 4),
+                        Text(
+                          '${authState.token!.substring(0, 15)}...',
+                          style: theme.textTheme.bodySmall?.copyWith(
+                            fontFamily: 'monospace',
+                            color: theme.colorScheme.onSurface.withOpacity(0.7),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ],
+
+                const Divider(),
+
+                ListTile(
+                  leading: Icon(
+                    theme.brightness == Brightness.dark
+                        ? Icons.light_mode
+                        : Icons.dark_mode,
+                  ),
+                  title: const Text('Toggle Theme'),
+                  onTap: () {
+                    searchFocusNode.unfocus();
+                    Navigator.pop(context);
+                    ref.read(themeModeProvider.notifier).toggleTheme();
+                    HapticFeedback.lightImpact();
+                  },
+                ),
+
+                ListTile(
+                  leading: const Icon(Icons.logout),
+                  title: const Text('Logout'),
+                  onTap: () async {
+                    searchFocusNode.unfocus();
+                    Navigator.pop(context);
+                    await ref.read(authProvider.notifier).logout();
+                    if (context.mounted) {
+                      Navigator.of(context).pushReplacementNamed('/login');
+                    }
+                  },
+                ),
+              ],
+            ),
+          ),
+        ),
+
+        body: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: PRSearchBar(
+                focusNode: searchFocusNode,
               ),
             ),
+
+            const Padding(
+              padding: EdgeInsets.all(16),
+              child: PRStatsCard(),
+            ),
+
+            Expanded(
+              child: _buildPRList(theme, prState, filteredPRs),
+            ),
           ],
+        ),
 
-          // Search bar
-          const Padding(
-            padding: EdgeInsets.symmetric(horizontal: 16),
-            child: PRSearchBar(),
+        floatingActionButton: ScaleTransition(
+          scale: _fabAnimationController,
+          child: FloatingActionButton(
+            onPressed: _scrollToTop,
+            backgroundColor: theme.colorScheme.primary,
+            child: const Icon(Icons.keyboard_arrow_up, color: Colors.white),
           ),
-
-          // Stats card
-          const Padding(
-            padding: EdgeInsets.all(16),
-            child: PRStatsCard(),
-          ),
-
-          // Pull requests list
-          Expanded(
-            child: _buildPRList(theme, prState, filteredPRs),
-          ),
-        ],
-      ),
-
-      // Floating action button
-      floatingActionButton: ScaleTransition(
-        scale: _fabAnimationController,
-        child: FloatingActionButton(
-          onPressed: _scrollToTop,
-          backgroundColor: theme.colorScheme.primary,
-          child: const Icon(Icons.keyboard_arrow_up, color: Colors.white),
         ),
       ),
     );
@@ -207,7 +232,7 @@ class _PullRequestListScreenState extends ConsumerState<PullRequestListScreen>
       PullRequestState prState,
       List<PullRequest> filteredPRs,
       ) {
-    // Error state
+
     if (prState.error != null && prState.pullRequests.isEmpty) {
       return PRErrorState(
         error: prState.error!,
@@ -286,6 +311,7 @@ class _PullRequestListScreenState extends ConsumerState<PullRequestListScreen>
                           child: Padding(
                             padding: const EdgeInsets.only(bottom: 16),
                             child: PRCard(
+                              focusNode: searchFocusNode,
                               pullRequest: pr,
                               index: index,
                             ),
@@ -310,7 +336,6 @@ class _PullRequestListScreenState extends ConsumerState<PullRequestListScreen>
   }
 }
 
-// Performance monitoring for PR list
 class PRListPerformanceMonitor {
   static final Map<String, Stopwatch> _timers = {};
 

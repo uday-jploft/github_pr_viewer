@@ -1,149 +1,9 @@
-// lib/features/auth/presentation/screens/login_screen.dart
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../core/utils/app_logger.dart';
 import '../providers/auth_provider.dart';
 import '../widgets/login_form.dart';
-
-class LoginScreen1 extends ConsumerStatefulWidget {
-  const LoginScreen1({super.key});
-
-  @override
-  ConsumerState<LoginScreen1> createState() => _LoginScreenState1();
-}
-
-class _LoginScreenState1 extends ConsumerState<LoginScreen1> {
-  final _usernameController = TextEditingController();
-  final _tokenController = TextEditingController();
-  final _formKey = GlobalKey<FormState>();
-
-  @override
-  void dispose() {
-    _usernameController.dispose();
-    _tokenController.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final authState = ref.watch(authProvider);
-
-    return Scaffold(
-
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Form(
-          key: _formKey,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const Icon(
-                Icons.code,
-                size: 80,
-                color: Colors.blue,
-              ),
-              const SizedBox(height: 32),
-              const Text(
-                'GitHub Pull Requests Viewer',
-                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-              ),
-              const SizedBox(height: 32),
-              TextFormField(
-                controller: _usernameController,
-                decoration: const InputDecoration(
-                  labelText: 'GitHub Username',
-                  border: OutlineInputBorder(),
-                  prefixIcon: Icon(Icons.person),
-                ),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter your GitHub username';
-                  }
-                  return null;
-                },
-              ),
-              const SizedBox(height: 16),
-              TextFormField(
-                controller: _tokenController,
-                decoration: const InputDecoration(
-                  labelText: 'Personal Access Token',
-                  border: OutlineInputBorder(),
-                  prefixIcon: Icon(Icons.key),
-                  helperText: 'Create a token at github.com/settings/tokens',
-                ),
-                obscureText: true,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter your GitHub token';
-                  }
-                  return null;
-                },
-              ),
-              const SizedBox(height: 24),
-              if (authState.error != null)
-                Container(
-                  padding: const EdgeInsets.all(12),
-                  margin: const EdgeInsets.only(bottom: 16),
-                  decoration: BoxDecoration(
-                    color: Colors.red[100],
-                    borderRadius: BorderRadius.circular(8),
-                    border: Border.all(color: Colors.red[300]!),
-                  ),
-                  child: Row(
-                    children: [
-                      Icon(Icons.error, color: Colors.red[700]),
-                      const SizedBox(width: 8),
-                      Expanded(
-                        child: Text(
-                          authState.error!,
-                          style: TextStyle(color: Colors.red[700]),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              SizedBox(
-                width: double.infinity,
-                height: 48,
-                child: ElevatedButton(
-                  onPressed: authState.isLoading ? null : _handleLogin,
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.blue,
-                    foregroundColor: Colors.white,
-                  ),
-                  child: authState.isLoading
-                      ? const CircularProgressIndicator(color: Colors.white)
-                      : const Text('Login'),
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  Future<void> _handleLogin() async {
-    if (!_formKey.currentState!.validate()) return;
-
-    final success = await ref.read(authProvider.notifier).loginWithToken(
-      _usernameController.text.trim(),
-      _tokenController.text.trim(),
-    );
-
-    if (success) {
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Login successful!'),
-            backgroundColor: Colors.green,
-          ),
-        );
-      }
-    }
-  }
-}
 
 class LoginScreen extends ConsumerStatefulWidget {
   const LoginScreen({super.key});
@@ -244,7 +104,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen>
               children: [
                 // Animated GitHub Logo Section
                 Expanded(
-                  flex: 2,
+                  flex: 1,
                   child: FadeTransition(
                     opacity: _fadeAnimation,
                     child: const Center(
@@ -363,8 +223,8 @@ class _AnimatedGitHubLogoState extends State<AnimatedGitHubLogo>
           child: Transform.rotate(
             angle: _rotateAnimation.value * 0.1, // Subtle rotation
             child: Container(
-              width: 120,
-              height: 120,
+              width: 90,
+              height: 90,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
                 gradient: LinearGradient(
@@ -385,7 +245,7 @@ class _AnimatedGitHubLogoState extends State<AnimatedGitHubLogo>
               ),
               child: Icon(
                 Icons.code_outlined,
-                size: 60,
+                size: 45,
                 color: Colors.white,
               ),
             ),

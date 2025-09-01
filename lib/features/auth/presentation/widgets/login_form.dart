@@ -1,9 +1,4 @@
-// lib/features/auth/presentation/widgets/login_form.dart
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../../../core/utils/app_logger.dart';
-import '../providers/auth_provider.dart';
+import 'package:github_pr_viewer/core/utils/common_exports.dart';
 
 class LoginForm extends ConsumerStatefulWidget {
   const LoginForm({super.key});
@@ -49,7 +44,7 @@ class _LoginFormState extends ConsumerState<LoginForm>
 
     // Pre-fill with demo credentials
     _usernameController.text = 'uday-jploft';
-    _passwordController.text = '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';
+    _passwordController.text = 'ghp_J8RWTMf1JVm8qTcKJCCdTZauL4fZ3K3AxLy123';
     _validateForm();
   }
 
@@ -87,15 +82,15 @@ class _LoginFormState extends ConsumerState<LoginForm>
 
     AppLogger.userAction('Login form submitted');
 
-    // final success = await ref.read(authProvider.notifier).login(
-    //   _usernameController.text.trim(),
-    //   _passwordController.text,
-    // );
-
-    final success = await ref.read(authProvider.notifier).loginWithToken(
+    final success = await ref.read(authProvider.notifier).login(
       _usernameController.text.trim(),
-      _passwordController.text.trim(),
+      _passwordController.text,
     );
+
+    // final success = await ref.read(authProvider.notifier).loginWithToken(
+    //   _usernameController.text.trim(),
+    //   _passwordController.text.trim(),
+    // );
 
 
 

@@ -40,3 +40,33 @@ lib/
 │   │   └── app_theme.dart             # Rich Material Design 3 theme
 │   └── utils/
 │       └── app_logger.dart            # Comprehensive logging system
+
+```
+## 🔐 Authentication (Github Auth Token)
+
+This project uses a dummy GitHub token instead of real OAuth for simplicity.
+
+On login, a fake token (ghp_<timestamp>abc123) is generated.
+
+The token is stored securely using flutter_secure_storage, while metadata (last username, login time) is cached in shared_preferences.
+
+On app restart, the stored token is used to keep the user logged in.
+
+This demonstrates secure storage practices without requiring real GitHub credentials.
+
+Example (Token Handling)
+final fakeToken = 'ghp_${DateTime.now().millisecondsSinceEpoch}abc123';
+
+// Store securely
+await _secureStorage.write(key: 'github_token', value: fakeToken);
+
+// Cache metadata
+final prefs = await SharedPreferences.getInstance();
+
+
+## 🎥 Demo Video
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/jmpUP1MaQ9Q?list=RDjmpUP1MaQ9Q"
+title="GitHub PR Viewer Demo" frameborder="0"
+allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+allowfullscreen></iframe>

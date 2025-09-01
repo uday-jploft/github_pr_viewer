@@ -1,18 +1,15 @@
-// lib/features/pr/presentation/widgets/pr_card.dart
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:cached_network_image/cached_network_image.dart';
-import 'package:github_pr_viewer/data/models/pull_request.dart';
-import '../../../../core/utils/app_logger.dart';
+import 'package:github_pr_viewer/core/utils/common_exports.dart';
 
 class PRCard extends StatefulWidget {
   final PullRequest pullRequest;
   final int index;
+  final FocusNode focusNode;
 
   const PRCard({
     super.key,
     required this.pullRequest,
     required this.index,
+    required this.focusNode
   });
 
   @override
@@ -60,10 +57,11 @@ class _PRCardState extends State<PRCard>
   }
 
   void _onTap() {
+    widget.focusNode.unfocus();
     HapticFeedback.lightImpact();
+    FocusScope.of(context).unfocus();
     AppLogger.userAction('PR card tapped: #${widget.pullRequest.number}');
 
-    // Navigate to PR details (implement later)
     showDialog(
       context: context,
       builder: (context) => _buildPRDialog(),
@@ -113,10 +111,8 @@ class _PRCardState extends State<PRCard>
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    // Header Row
                     Row(
                       children: [
-                        // PR Number Badge
                         Container(
                           padding: const EdgeInsets.symmetric(
                             horizontal: 8,
@@ -135,14 +131,20 @@ class _PRCardState extends State<PRCard>
                           ),
                         ),
 
+                        Text(
+                          '  ${pr.id}',
+                          style: theme.textTheme.labelSmall?.copyWith(
+                            color: theme.colorScheme.onSurface.withOpacity(0.5),
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+
                         const Spacer(),
 
-                        // State indicator
                         _buildStateIndicator(theme, pr),
 
                         const SizedBox(width: 8),
 
-                        // Draft indicator
                         if (pr.draft)
                           Container(
                             padding: const EdgeInsets.symmetric(
@@ -193,10 +195,8 @@ class _PRCardState extends State<PRCard>
                       const SizedBox(height: 16),
                     ],
 
-                    // Author and metadata row
                     Row(
                       children: [
-                        // Author avatar
                         ClipRRect(
                           borderRadius: BorderRadius.circular(20),
                           child: CachedNetworkImage(
@@ -234,7 +234,6 @@ class _PRCardState extends State<PRCard>
 
                         const SizedBox(width: 12),
 
-                        // Author info
                         Expanded(
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -255,7 +254,6 @@ class _PRCardState extends State<PRCard>
                           ),
                         ),
 
-                        // Changes summary
                         if (pr.totalChanges > 0) ...[
                           Container(
                             padding: const EdgeInsets.symmetric(
@@ -294,7 +292,6 @@ class _PRCardState extends State<PRCard>
                       ],
                     ),
 
-                    // Labels
                     if (pr.labels.isNotEmpty) ...[
                       const SizedBox(height: 12),
                       Wrap(

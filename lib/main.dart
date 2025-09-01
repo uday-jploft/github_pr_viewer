@@ -1,24 +1,12 @@
-// lib/main.dart
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:logger/logger.dart';
-
-import 'core/theme/app_theme.dart';
-import 'core/utils/app_logger.dart';
-import 'core/router/app_router.dart';
-import 'features/auth/presentation/providers/auth_provider.dart';
+import 'package:github_pr_viewer/core/utils/common_exports.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  // Initialize logging for monitoring
   AppLogger.init();
 
-  // Performance monitoring
   final stopwatch = Stopwatch()..start();
 
-  // Set preferred orientations
   await SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
@@ -26,7 +14,6 @@ void main() async {
     DeviceOrientation.landscapeRight,
   ]);
 
-  // System UI styling
   SystemChrome.setSystemUIOverlayStyle(
     const SystemUiOverlayStyle(
       statusBarColor: Colors.transparent,
@@ -36,7 +23,7 @@ void main() async {
   );
 
   stopwatch.stop();
-  AppLogger.performance('App initialization took: ${stopwatch.elapsedMilliseconds}ms');
+  AppLogger.performance('App initialization time: ${stopwatch.elapsedMilliseconds}ms');
 
   runApp(
     const ProviderScope(
@@ -57,17 +44,11 @@ class GitHubPRViewerApp extends ConsumerWidget {
     return MaterialApp(
       title: 'GitHub PR Viewer',
       debugShowCheckedModeBanner: false,
-
-      // Theme Configuration
       theme: AppTheme.lightTheme,
       darkTheme: AppTheme.darkTheme,
       themeMode: themeMode,
-
-      // Routing
       routes: router,
       initialRoute: initialRoute,
-
-      // Performance monitoring
       builder: (context, child) {
         return MediaQuery(
           data: MediaQuery.of(context).copyWith(
@@ -82,21 +63,3 @@ class GitHubPRViewerApp extends ConsumerWidget {
   }
 }
 
-// Theme mode provider for dark/light mode switching
-final themeModeProvider = StateNotifierProvider<ThemeModeNotifier, ThemeMode>(
-      (ref) => ThemeModeNotifier(),
-);
-
-class ThemeModeNotifier extends StateNotifier<ThemeMode> {
-  ThemeModeNotifier() : super(ThemeMode.system);
-
-  void toggleTheme() {
-    state = state == ThemeMode.light ? ThemeMode.dark : ThemeMode.light;
-    AppLogger.info('Theme changed to: $state');
-  }
-
-  void setTheme(ThemeMode mode) {
-    state = mode;
-    AppLogger.info('Theme set to: $mode');
-  }
-}
