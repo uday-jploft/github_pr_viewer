@@ -1,15 +1,4 @@
-// lib/features/pr/presentation/screens/pr_list_screen.dart
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:github_pr_viewer/data/models/pull_request.dart';
-import '../../../../core/utils/app_logger.dart';
-import '../../../../main.dart';
-import '../../../auth/presentation/providers/auth_provider.dart';
-import '../providers/pr_provider.dart';
-import '../widgets/pr_card.dart';
-import '../widgets/pr_shimmer_loading.dart';
-import '../widgets/pr_search_bar.dart';
+import 'package:github_pr_viewer/core/utils/common_exports.dart';
 
 class PullRequestListScreen extends ConsumerStatefulWidget {
   const PullRequestListScreen({super.key});
@@ -43,7 +32,6 @@ class _PullRequestListScreenState extends ConsumerState<PullRequestListScreen>
 
     _scrollController.addListener(_onScroll);
 
-    // Load PRs on screen init
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _loadPullRequests();
     });
@@ -107,7 +95,6 @@ class _PullRequestListScreenState extends ConsumerState<PullRequestListScreen>
         backgroundColor: theme.colorScheme.surface,
         elevation: 0,
         actions: [
-          // Theme toggle button
           IconButton(
             icon: Icon(
               theme.brightness == Brightness.dark
@@ -120,7 +107,7 @@ class _PullRequestListScreenState extends ConsumerState<PullRequestListScreen>
             },
           ),
 
-          // Logout button
+          // Logout
           IconButton(
             icon: const Icon(Icons.logout),
             onPressed: () async {
@@ -310,7 +297,6 @@ class _PullRequestListScreenState extends ConsumerState<PullRequestListScreen>
   }
 }
 
-// Performance monitoring for PR list
 class PRListPerformanceMonitor {
   static final Map<String, Stopwatch> _timers = {};
 

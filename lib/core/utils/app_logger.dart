@@ -1,4 +1,3 @@
-// lib/core/utils/app_logger.dart
 import 'dart:ui';
 
 import 'package:logger/logger.dart';

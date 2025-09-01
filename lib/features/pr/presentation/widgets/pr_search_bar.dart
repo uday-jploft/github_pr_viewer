@@ -1,9 +1,4 @@
-// lib/features/pr/presentation/widgets/pr_search_bar.dart
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../../../core/utils/app_logger.dart';
-import '../providers/pr_provider.dart';
+import 'package:github_pr_viewer/core/utils/common_exports.dart';
 
 class PRSearchBar extends ConsumerStatefulWidget {
   const PRSearchBar({super.key});
@@ -145,14 +140,14 @@ class _PRSearchBarState extends ConsumerState<PRSearchBar>
 }
 
 // lib/features/pr/presentation/widgets/pr_empty_state.dart
-class PREmptyState extends StatefulWidget {
+class PREmptyState extends ConsumerStatefulWidget {
   const PREmptyState({super.key});
 
   @override
-  State<PREmptyState> createState() => _PREmptyStateState();
+  ConsumerState<PREmptyState> createState() => _PREmptyStateState();
 }
 
-class _PREmptyStateState extends State<PREmptyState>
+class _PREmptyStateState extends ConsumerState<PREmptyState>
     with TickerProviderStateMixin {
   late AnimationController _bounceController;
   late Animation<double> _bounceAnimation;
@@ -244,9 +239,23 @@ class _PREmptyStateState extends State<PREmptyState>
               const SizedBox(height: 32),
 
               ElevatedButton.icon(
-                onPressed: () {
+                onPressed: () async {
+                  final token = ref.read(authTokenProvider);
                   HapticFeedback.lightImpact();
                   AppLogger.userAction('Create PR button tapped from empty state');
+
+                  final gitHubApi = GitHubApiService();
+
+                  final newPr = await gitHubApi.createPullRequest(
+                    title: 'Add new feature',
+                    head: 'feature-branch',
+                    base: 'main',
+                    body: 'This PR adds a new feature',
+                    token: token ?? "",
+                  );
+
+                  print('Created PR: #${newPr.number} - ${newPr.title}');
+
                   // Navigate to GitHub or show instructions
                 },
                 icon: const Icon(Icons.add),

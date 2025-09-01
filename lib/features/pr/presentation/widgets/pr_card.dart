@@ -1,9 +1,6 @@
-// lib/features/pr/presentation/widgets/pr_card.dart
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:cached_network_image/cached_network_image.dart';
-import 'package:github_pr_viewer/data/models/pull_request.dart';
-import '../../../../core/utils/app_logger.dart';
+
+
+import 'package:github_pr_viewer/core/utils/common_exports.dart';
 
 class PRCard extends StatefulWidget {
   final PullRequest pullRequest;

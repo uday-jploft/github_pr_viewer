@@ -1,9 +1,5 @@
-// lib/features/pr/presentation/widgets/pr_shimmer_loading.dart
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:github_pr_viewer/features/pr/presentation/providers/pr_provider.dart';
+import 'package:github_pr_viewer/core/utils/common_exports.dart';
 import 'package:shimmer/shimmer.dart';
-import '../../../../core/utils/app_logger.dart';
 
 class PRShimmerLoading extends StatefulWidget {
   const PRShimmerLoading({super.key});

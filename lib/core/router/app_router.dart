@@ -1,11 +1,5 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../utils/app_logger.dart';
-import '../../features/auth/presentation/screens/login_screen.dart';
-import '../../features/pr/presentation/screens/pr_list_screen.dart';
-import '../../features/auth/presentation/providers/auth_provider.dart';
+import 'package:github_pr_viewer/core/utils/common_exports.dart';
 
-// Simple navigation without go_router dependency
 class AppRouter {
   static const String login = '/login';
   static const String pullRequests = '/pull-requests';
