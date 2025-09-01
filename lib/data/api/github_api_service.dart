@@ -250,8 +250,8 @@ class GitHubApiService {
       }) async {
     final headers = <String, String>{
       'Accept': 'application/vnd.github.v3+json',
-      'User-Agent': 'GitHub-PR-Viewer-Flutter-App',
-      if (token != null) 'Authorization': 'Bearer $token',
+      // 'User-Agent': 'GitHub-PR-Viewer-Flutter-App',
+      // if (token != null) 'Authorization': 'Bearer $token',
     };
 
     try {
@@ -285,19 +285,25 @@ class GitHubApiService {
   /// Fetch all pull requests
   Future<List<PullRequest>> fetchPullRequests({
     String? token,
-    String state = 'open',
+    String state = 'all',
   }) async {
-    final uri = Uri.parse('$baseUrl/repos/$owner/$repo/pulls').replace(
+    print("https://github.com/uday-jploft/github_pr_viewer/pulls/");
+    final uri = Uri.parse(
+      // "https://api.github.com/repos/uday-jploft/github_pr_viewer/pulls"
+        '$baseUrl/repos/$owner/$repo/pulls'
+    ).replace(
       queryParameters: {
         'state': state,
-        'sort': 'updated',
-        'direction': 'desc',
-        'per_page': '50',
+        // 'sort': 'updated',
+        // 'direction': 'desc',
+        // 'per_page': '50',
       },
     );
 
     final response = await _makeRequest(uri, method: 'GET', token: token);
 
+    print("response.body");
+    print(response.body);
     if (response.statusCode == 200) {
       final List<dynamic> jsonList = json.decode(response.body);
       return jsonList.map((json) => PullRequest.fromJson(json)).toList();

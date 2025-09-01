@@ -1,7 +1,8 @@
 import 'package:github_pr_viewer/core/utils/common_exports.dart';
 
 class PRSearchBar extends ConsumerStatefulWidget {
-  const PRSearchBar({super.key});
+  final FocusNode focusNode;
+  const PRSearchBar({super.key, required this.focusNode});
 
   @override
   ConsumerState<PRSearchBar> createState() => _PRSearchBarState();
@@ -10,7 +11,7 @@ class PRSearchBar extends ConsumerStatefulWidget {
 class _PRSearchBarState extends ConsumerState<PRSearchBar>
     with SingleTickerProviderStateMixin {
   final TextEditingController _searchController = TextEditingController();
-  final FocusNode _focusNode = FocusNode();
+  // final FocusNode _focusNode = FocusNode();
   late AnimationController _animationController;
   late Animation<double> _scaleAnimation;
 
@@ -33,12 +34,12 @@ class _PRSearchBarState extends ConsumerState<PRSearchBar>
       curve: Curves.easeInOut,
     ));
 
-    _focusNode.addListener(() {
+    widget.focusNode.addListener(() {
       setState(() {
-        _isExpanded = _focusNode.hasFocus;
+        _isExpanded = widget.focusNode.hasFocus;
       });
 
-      if (_focusNode.hasFocus) {
+      if (widget.focusNode.hasFocus) {
         _animationController.forward();
       } else {
         _animationController.reverse();
@@ -49,7 +50,7 @@ class _PRSearchBarState extends ConsumerState<PRSearchBar>
   @override
   void dispose() {
     _searchController.dispose();
-    _focusNode.dispose();
+    widget.focusNode.dispose();
     _animationController.dispose();
     super.dispose();
   }
@@ -62,7 +63,7 @@ class _PRSearchBarState extends ConsumerState<PRSearchBar>
   void _clearSearch() {
     _searchController.clear();
     _onSearchChanged('');
-    _focusNode.unfocus();
+    widget.focusNode.unfocus();
     HapticFeedback.lightImpact();
   }
 
@@ -70,71 +71,74 @@ class _PRSearchBarState extends ConsumerState<PRSearchBar>
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    return AnimatedBuilder(
-      animation: _scaleAnimation,
-      builder: (context, child) {
-        return Transform.scale(
-          scale: _scaleAnimation.value,
-          child: AnimatedContainer(
-            duration: const Duration(milliseconds: 300),
-            curve: Curves.easeInOut,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(16),
-              boxShadow: _isExpanded
-                  ? [
-                BoxShadow(
-                  color: theme.colorScheme.primary.withOpacity(0.1),
-                  blurRadius: 20,
-                  spreadRadius: 2,
-                ),
-              ]
-                  : null,
-            ),
-            child: TextField(
-              controller: _searchController,
-              focusNode: _focusNode,
-              decoration: InputDecoration(
-                hintText: 'Search pull requests...',
-                prefixIcon: Icon(
-                  Icons.search,
-                  color: _isExpanded
-                      ? theme.colorScheme.primary
-                      : theme.colorScheme.onSurface.withOpacity(0.6),
-                ),
-                suffixIcon: _searchController.text.isNotEmpty
-                    ? IconButton(
-                  icon: const Icon(Icons.clear),
-                  onPressed: _clearSearch,
-                )
+    return Padding(
+      padding: const EdgeInsets.only(top: 8.0),
+      child: AnimatedBuilder(
+        animation: _scaleAnimation,
+        builder: (context, child) {
+          return Transform.scale(
+            scale: _scaleAnimation.value,
+            child: AnimatedContainer(
+              duration: const Duration(milliseconds: 300),
+              curve: Curves.easeInOut,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(16),
+                boxShadow: _isExpanded
+                    ? [
+                  BoxShadow(
+                    color: theme.colorScheme.primary.withOpacity(0.1),
+                    blurRadius: 20,
+                    spreadRadius: 2,
+                  ),
+                ]
                     : null,
-                filled: true,
-                fillColor: _isExpanded
-                    ? theme.colorScheme.surface
-                    : theme.colorScheme.surfaceVariant.withOpacity(0.5),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(16),
-                  borderSide: BorderSide.none,
-                ),
-                enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(16),
-                  borderSide: BorderSide(
-                    color: theme.colorScheme.outline.withOpacity(0.1),
-                  ),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(16),
-                  borderSide: BorderSide(
-                    color: theme.colorScheme.primary,
-                    width: 2,
-                  ),
-                ),
               ),
-              onChanged: _onSearchChanged,
-              textInputAction: TextInputAction.search,
+              child: TextField(
+                controller: _searchController,
+                focusNode: widget.focusNode,
+                decoration: InputDecoration(
+                  hintText: 'Search pull requests...',
+                  prefixIcon: Icon(
+                    Icons.search,
+                    color: _isExpanded
+                        ? theme.colorScheme.primary
+                        : theme.colorScheme.onSurface.withOpacity(0.6),
+                  ),
+                  suffixIcon: _searchController.text.isNotEmpty
+                      ? IconButton(
+                    icon: const Icon(Icons.clear),
+                    onPressed: _clearSearch,
+                  )
+                      : null,
+                  filled: true,
+                  fillColor: _isExpanded
+                      ? theme.colorScheme.surface
+                      : theme.colorScheme.surfaceVariant.withOpacity(0.5),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(16),
+                    borderSide: BorderSide.none,
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(16),
+                    borderSide: BorderSide(
+                      color: theme.colorScheme.outline.withOpacity(0.1),
+                    ),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(16),
+                    borderSide: BorderSide(
+                      color: theme.colorScheme.primary,
+                      width: 2,
+                    ),
+                  ),
+                ),
+                onChanged: _onSearchChanged,
+                textInputAction: TextInputAction.search,
+              ),
             ),
-          ),
-        );
-      },
+          );
+        },
+      ),
     );
   }
 }
