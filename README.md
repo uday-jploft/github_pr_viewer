@@ -66,11 +66,4 @@ final prefs = await SharedPreferences.getInstance();
 
 ## 🎥 Demo Video
 
-## 🎥 Demo Video
-
-[![GitHub PR Viewer Demo](https://www.youtube.com/embed/jmpUP1MaQ9Q?list=RDjmpUP1MaQ9Q.jpg)](https://www.youtube.com/embed/jmpUP1MaQ9Q?list=RDjmpUP1MaQ9Q)
-
-<iframe width="560" height="315" src="https://www.youtube.com/embed/jmpUP1MaQ9Q?list=RDjmpUP1MaQ9Q"
-title="GitHub PR Viewer Demo" frameborder="0"
-allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-allowfullscreen></iframe>
+[![GitHub PR Viewer Demo](https://youtube.com/shorts/FFFCgEZD4qE?si=KiRypuWre2AYoikE.jpg)](https://youtube.com/shorts/FFFCgEZD4qE?si=KiRypuWre2AYoikE)
